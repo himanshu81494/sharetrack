@@ -21,7 +21,20 @@ $ export APP_MAIL_PASSWORD="himanshuzapplon"
 export APP_SETTINGS="project.config.DevelopmentConfig"
 export APP_MAIL_USERNAME="himanshu@zapplon.com"
 export APP_MAIL_PASSWORD="himanshuzapplon"
+
+
+export APP_SETTINGS="project.config.DevelopmentConfig"
+python manage.py create_db
+python manage.py db init
+python manage.py db migrate
+python manage.py create_admin
 ```
+open tmux
+control+B then D
+tmux will detach
+$ tmux attach
+to attach again
+exit to exit
 
 or
 

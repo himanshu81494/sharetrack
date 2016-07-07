@@ -4,7 +4,7 @@ body {
   padding-top: 70px;
 }
 
-<style>
+
 .my_back{
 display: block;
 position:fixed;
@@ -140,4 +140,9 @@ max-height: 100px;
 }
 }
 
-</style>
+
+
+.top-buffer20 { margin-top:20px; }
+.top-buffer40 { margin-top:40px; }
+.top-buffer80 { margin-top:80px; }
+.top-buffer100 { margin-top:100px; }

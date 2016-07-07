@@ -2,15 +2,19 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Flask User Management</title>
+    <title>Hitune</title>
     <!-- meta -->
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta property="og:title" content="{{ singlepost.post_title }}"/>
+    <meta property="og:url" content="{{ singlepost.post_link }}"/>
+    <meta property="og:image" content="{{ singlepost.post_image }}"/>
+    <meta property="og:image:width" content="480"/>
+    <meta property="og:image:height" content="360"/>
+    <meta property="og:description" content="{{ singlepost.post_description }}" />
+    <meta property="og:type" content="{{ singlepost.post_type }}" />
+    
+    <meta name="author" content="himanshu gautam">
     <meta name="viewport" content="width=device-width,initial-scale=1">
       
-      {% if singlepost %}
-      {{ singlepost.post_description |safe }}
-      {% endif %}
       
     <!-- styles -->
     <link href="http://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/yeti/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -70,6 +74,10 @@
             </table>
             {% endif %}
 
+
+      <a href={{ singlepost.post_link }}>
+      <button type="button" class="btn btn-primary btn-lg">Follow Link</button>
+      </a>
       {% endblock %}
 
       <br>

@@ -6,7 +6,7 @@ import unittest
 import coverage
 import datetime
 
-from flask.ext.script import Manager
+from flask.ext.script import Manager, Server
 from flask.ext.migrate import Migrate, MigrateCommand
 
 COV = coverage.coverage(
@@ -27,6 +27,7 @@ manager = Manager(app)
 # migrations
 manager.add_command('db', MigrateCommand)
 
+manager.add_command("runserver", Server(host="0.0.0.0", port=5000))
 
 @manager.command
 def test():

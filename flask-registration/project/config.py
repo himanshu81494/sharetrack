@@ -32,10 +32,10 @@ class BaseConfig(object):
 
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
-    DEBUG = True
-    WTF_CSRF_ENABLED = False
+    DEBUG = False
+    WTF_CSRF_ENABLED = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'dev.sqlite')
-    DEBUG_TB_ENABLED = True
+    DEBUG_TB_ENABLED = False
 
 
 class TestingConfig(BaseConfig):

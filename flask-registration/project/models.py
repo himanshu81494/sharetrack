@@ -93,13 +93,16 @@ class Posts(db.Model):
     post_image = db.Column(db.String, default='')
     post_description = db.Column(db.String,default='')
     post_code = db.Column(db.String, unique=True, nullable=False)
+    post_category = db.Column(db.String,default='')
+    post_type = db.Column(db.String,default='article')
     
 
-    def __init__(self, post_title, post_link, post_image, post_description, post_code):
+    def __init__(self, post_title, post_link, post_image, post_description, post_category, post_code):
         self.post_title = post_title
         self.post_link = post_link
         self.post_image = post_image
         self.post_description = post_description
+        self.post_category = post_category
         self.post_code = post_code
         
     def get_id(self):

@@ -41,7 +41,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from project.models import Posts, Tracking, Points
 from flask_wtf import Form
 from wtforms import validators
-from wtforms import TextField, StringField
+from wtforms import TextField, StringField, SelectField
 from wtforms.validators import required
 from project import app, db
 from flask import redirect, url_for, request, flash
@@ -82,6 +82,28 @@ def showposts():
   # posts = Posts.query.all()
   # points = Points.query.all()
 
+@main_blueprint.route('/pages', methods=['GET'])
+@login_required
+def pages():
+  limitpage = 5
+  showearning = request.args.get('showearning')
+  if showearning > 0:
+    posts = Posts.query.join(Points, Posts.id == Points.post_ID) \
+    .add_columns(Points.earned_points, Posts.post_title, Posts.id, Posts.post_link, Posts.post_image, Posts.post_code, Posts.post_description).filter_by(user_ID = current_user.id).order_by(Points.earned_points.desc()).all()
+    return render_template("main/alluser.html", title="all posts", posts = posts, ref = hashids.encode(current_user.id))
+
+  pagerequested = request.args.get('page')
+  # pagerequested = int(pagerequested)
+  pageno = 1
+  if pagerequested > 1:
+    pageno = int(pagerequested)
+    # flash(int(pagerequested), "warning")
+  if pageno > limitpage:
+    pageno = 1
+  apage = Posts.query.order_by(Posts.id.desc()).paginate(pageno, 5, False)
+  
+  return render_template("main/alluser.html", title="pages", apage = apage, ref = hashids.encode(current_user.id), currentpageno = pageno, limitpage = limitpage)
+
 
 @main_blueprint.route('/showpost/<code>', methods=['GET'])
 @login_required
@@ -118,9 +140,10 @@ def showpost(code):
 class addpostvalidator(Form):
   post_title = TextField('post_title',validators=[required()])
   post_link = TextField('post_link',validators=[required()])
-  post_image = TextField('post_image',validators=[])
-  post_description = TextField('post_description',validators=[])
-
+  post_image = TextField('post_image',validators=[required()])
+  post_description = TextField('post_description',validators=[required()])
+  post_category = SelectField('post_type', choices = [('entertainment','entertainment'), ('fashion', 'fashion'), ('food', 'food'), ('relationships', 'relationships'), ('favourites', 'favourites'), ('travel', 'travel'), ('sports', 'sports'), ('other', 'other')], validators=[required()])
+    
 #http://stackoverflow.com/questions/20837209/flask-wtform-save-form-to-db
 @main_blueprint.route('/addpost/',methods=['GET','POST'])
 @login_required
@@ -135,6 +158,7 @@ def addpost():
       form.post_link.data,
       form.post_image.data,
       form.post_description.data,
+      form.post_category.data,
       generate_password_hash(form.post_title.data)
       )
     db.session.add(new_post)
