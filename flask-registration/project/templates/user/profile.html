@@ -8,6 +8,7 @@
 {% if current_user.is_authenticated() %}
   <p>Email: <strong>{{current_user.email}}</strong></p>
 {% endif %}
+<div><a href="/userdetails">YOUR DETAILS</a></div>
 
 
 <h2>Change Password</h2>
@@ -36,6 +37,5 @@
   </p>
   <button class="btn btn-success" type="submit">Update</button>
 </form>
-
 
 {% endblock %}

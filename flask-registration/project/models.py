@@ -17,17 +17,43 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
     registered_on = db.Column(db.DateTime, nullable=False)
     admin = db.Column(db.Boolean, nullable=False, default=False)
+    usertype = db.Column(db.Integer, nullable=False, default=0)
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
     confirmed_on = db.Column(db.DateTime, nullable=True)
 
+    name = db.Column(db.String, default="")
+    city = db.Column(db.String, default="")
+    country = db.Column(db.String, default="")
+    profile = db.Column(db.String, default="")
+    page = db.Column(db.String, default="")
+    account_holdername = db.Column(db.String, default="")
+    bank_name = db.Column(db.String, default="")
+    account_number = db.Column(db.String, default="")
+    swift_code = db.Column(db.String, default="")
+    iban_number = db.Column(db.String, default="")
+    ifsc_code = db.Column(db.String, default="")
+    branch_address = db.Column(db.String, default="")
     def __init__(self, email, password, confirmed,
-                 admin=False, confirmed_on=None):
+                 admin=False,usertype=0, confirmed_on=None, name="", city="", country='' ,profile='', page='', account_holdername='', bank_name='', account_number='', swift_code='', iban_number='', ifsc_code='', branch_address=''):
         self.email = email
         self.password = bcrypt.generate_password_hash(password)
         self.registered_on = datetime.datetime.now()
         self.admin = admin
+        self.usertype = usertype
         self.confirmed = confirmed
         self.confirmed_on = confirmed_on
+        self.name = name
+        self.city = city
+        self.country = country
+        self.profile = profile
+        self.page = page
+        self.account_holdername = account_holdername
+        self.bank_name = bank_name
+        self.account_number = account_number
+        self.swift_code = swift_code
+        self.iban_number = iban_number
+        self.ifsc_code = ifsc_code
+        self.branch_address = branch_address
 
     def is_authenticated(self):
         return True
@@ -105,6 +131,25 @@ class Posts(db.Model):
         self.post_category = post_category
         self.post_code = post_code
         
+    def get_id(self):
+        return self.id
+
+
+
+class Transaction(db.Model):
+    __tablename__ = "transaction"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_on = db.Column(db.DateTime, server_default=db.func.now())
+    amount = db.Column(db.Integer, nullable=False) 
+    user_ID = db.Column(db.Integer, nullable=False)
+    comment = db.Column(db.String, default='')
+    
+
+    def __init__(self, amount, user_ID, comment=''):
+        self.amount = amount
+        self.user_ID = user_ID
+        self.comment = comment
     def get_id(self):
         return self.id
 

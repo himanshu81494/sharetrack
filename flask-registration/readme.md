@@ -24,6 +24,8 @@ export APP_MAIL_PASSWORD="himanshuzapplon"
 
 
 export APP_SETTINGS="project.config.DevelopmentConfig"
+export APP_MAIL_USERNAME="himanshu@zapplon.com"
+export APP_MAIL_PASSWORD="himanshuzapplon"
 python manage.py create_db
 python manage.py db init
 python manage.py db migrate

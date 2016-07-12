@@ -21,13 +21,18 @@
         {% endif %}
         {% if current_user.confirmed %}
           <li><a href="{{ url_for('main.showposts') }}">Posts</a></li>
+          <li><a href="{{ url_for('main.showposts') }}?showearning=67">earnings</a></li>
+          <li><a href="{{ url_for('main.payment') }}">payment</a></li>
+
+
         {% endif %}
         {% if current_user.confirmed and current_user.admin %}
-          <li><a href="{{ url_for('main.show') }}">Users</a></li>
+          <li><a href="{{ url_for('main.showusers') }}">Users</a></li>
           <li><a href="{{ url_for('main.addpost') }}">Add Post</a></li>
           <li><a href="{{ url_for('main.points') }}">points</a></li>
           <li><a href="{{ url_for('main.tracking') }}">tracking</a></li>
           <li><a href="{{ url_for('main.pages') }}">toplinks</a></li>
+
 
         {% endif %}
       </ul>

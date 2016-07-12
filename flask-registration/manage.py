@@ -75,6 +75,20 @@ def create_admin():
         email="ad@min.com",
         password="admin",
         admin=True,
+        usertype=3,
+        confirmed=True,
+        confirmed_on=datetime.datetime.now())
+    )
+    db.session.commit()
+
+@manager.command
+def create_testuser():
+    """Creates the test user."""
+    db.session.add(User(
+        email="test@user.com",
+        password="user",
+        admin=False,
+        usertype=1,
         confirmed=True,
         confirmed_on=datetime.datetime.now())
     )
