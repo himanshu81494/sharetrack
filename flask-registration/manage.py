@@ -19,7 +19,7 @@ COV.start()
 from project import app, db
 from project.models import User
 
-app.config.from_object(os.environ['APP_SETTINGS'])
+app.config.from_object('project.config.ProductionConfig')
 
 migrate = Migrate(app, db)
 manager = Manager(app)
@@ -27,7 +27,7 @@ manager = Manager(app)
 # migrations
 manager.add_command('db', MigrateCommand)
 
-manager.add_command("runserver", Server(host="0.0.0.0", port=5000))
+manager.add_command("runserver", Server(host="0.0.0.0", port=80))
 
 @manager.command
 def test():

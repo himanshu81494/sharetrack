@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{{ url_for('main.home') }}">REFERAL SYSTEM</a>
+      <a class="navbar-brand" href="{{ url_for('main.home') }}">BIGTURNER</a>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -23,7 +23,7 @@
           <li><a href="{{ url_for('main.showposts') }}">Posts</a></li>
           <li><a href="{{ url_for('main.showposts') }}?showearning=67">earnings</a></li>
           <li><a href="{{ url_for('main.payment') }}">payment</a></li>
-
+	  <li><a href="{{ url_for('main.pages') }}">toplinks</a></li>
 
         {% endif %}
         {% if current_user.confirmed and current_user.admin %}
@@ -31,7 +31,6 @@
           <li><a href="{{ url_for('main.addpost') }}">Add Post</a></li>
           <li><a href="{{ url_for('main.points') }}">points</a></li>
           <li><a href="{{ url_for('main.tracking') }}">tracking</a></li>
-          <li><a href="{{ url_for('main.pages') }}">toplinks</a></li>
 
 
         {% endif %}

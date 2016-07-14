@@ -23,8 +23,8 @@ class BaseConfig(object):
     MAIL_USE_SSL = True
 
     # gmail authentication
-    MAIL_USERNAME = os.environ['APP_MAIL_USERNAME']
-    MAIL_PASSWORD = os.environ['APP_MAIL_PASSWORD']
+    MAIL_USERNAME = 'info@bigturner.in'#os.environ['APP_MAIL_USERNAME']
+    MAIL_PASSWORD = 'infozapplon_34'#os.environ['APP_MAIL_PASSWORD']
 
     # mail accounts
     MAIL_DEFAULT_SENDER = 'from@example.com'
@@ -51,8 +51,8 @@ class TestingConfig(BaseConfig):
 class ProductionConfig(BaseConfig):
     """Production configuration."""
     SECRET_KEY = 'my_precious'
-    DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/example'
+    DEBUG = True#False
+    SQLALCHEMY_DATABASE_URI = 'postgresql:///test1'
     DEBUG_TB_ENABLED = False
     STRIPE_SECRET_KEY = 'foo'
     STRIPE_PUBLISHABLE_KEY = 'bar'

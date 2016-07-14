@@ -22,10 +22,12 @@ main_blueprint = Blueprint('main', __name__,)
 ################http://stackoverflow.com/questions/23744171/flask-get-all-products-from-table-and-iterate-over-them
 
 @main_blueprint.route('/')
-@login_required
+#@login_required
 def home():
-	return render_template('main/index.html')
-
+	if current_user.is_authenticated():
+		return render_template('main/index.html')
+	else:
+		return render_template('main/landing.html')
 
 @main_blueprint.route('/user/<id>')
 def singleuser(id):
@@ -165,22 +167,25 @@ def pages():
 @main_blueprint.route('/showpost/<code>', methods=['GET'])
 def showpost(code):
 	singlepost = Posts.query.filter_by(post_code=code).first_or_404()
+	flash(singlepost.id, "warning")
+
 	user_code = request.args.get('ref')
 	if(user_code):
 		tup = hashids.decode(user_code)
 		user_code = float(tup[0])
 
-	if( Tracking.query.filter_by(post_ID = singlepost.id).filter_by( ip = request.remote_addr).filter_by(user_ID = user_code).scalar() is None):
+	if( Tracking.query.filter(Tracking.post_ID == singlepost.id).filter( Tracking.ip == request.remote_addr).filter(Tracking.user_ID == user_code).count() == 0):
 		newtrack = Tracking(singlepost.id, user_code , request.remote_addr)
 		db.session.add(newtrack)
-		db.session.commit()
-		if( Points.query.filter_by(post_ID = singlepost.id).filter_by(user_ID = user_code).scalar() is None):
+		#db.session.commit()
+	
+		if( Points.query.filter(Points.post_ID == singlepost.id).filter(Points.user_ID == user_code).count() == 0):
 			newpoint = Points(user_code, singlepost.id, 1)
 			db.session.add(newpoint)
-			db.session.commit()
+			#db.session.commit()
 
 		else:
-			element = Points.query.filter_by(post_ID = singlepost.id).filter_by(user_ID = user_code).first()
+			element = Points.query.filter(Points.post_ID == singlepost.id).filter(Points.user_ID == user_code).first()
 			element.earned_points += 1
 			db.session.commit()
 			flash (element.earned_points, 'warning')
@@ -229,6 +234,7 @@ def addpost():
 class detailsvalidator(Form):
 
 	name = TextField('name',validators=[required()])
+	phoneno = TextField('phoneno',validators=[required()])
 	city = TextField('city',validators=[required()])
 	country = TextField('country',validators=[required()])
 	profile = TextField('profile',validators=[required()])
@@ -257,6 +263,7 @@ def userdetails():
 	
 		
 		user.name = 	form.name.data
+		user.phoneno = form.phoneno.data
 		user.city	=form.city.data
 		user.country=	form.country.data
 		user.profile=	form.profile.data

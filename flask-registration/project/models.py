@@ -22,6 +22,7 @@ class User(db.Model):
     confirmed_on = db.Column(db.DateTime, nullable=True)
 
     name = db.Column(db.String, default="")
+    phoneno = db.Column(db.String, default="")
     city = db.Column(db.String, default="")
     country = db.Column(db.String, default="")
     profile = db.Column(db.String, default="")
@@ -34,7 +35,7 @@ class User(db.Model):
     ifsc_code = db.Column(db.String, default="")
     branch_address = db.Column(db.String, default="")
     def __init__(self, email, password, confirmed,
-                 admin=False,usertype=0, confirmed_on=None, name="", city="", country='' ,profile='', page='', account_holdername='', bank_name='', account_number='', swift_code='', iban_number='', ifsc_code='', branch_address=''):
+                 admin=False,usertype=0, confirmed_on=None, name="",phoneno="",  city="", country='' ,profile='', page='', account_holdername='', bank_name='', account_number='', swift_code='', iban_number='', ifsc_code='', branch_address=''):
         self.email = email
         self.password = bcrypt.generate_password_hash(password)
         self.registered_on = datetime.datetime.now()
@@ -43,6 +44,7 @@ class User(db.Model):
         self.confirmed = confirmed
         self.confirmed_on = confirmed_on
         self.name = name
+	self.phoneno = phoneno
         self.city = city
         self.country = country
         self.profile = profile
@@ -79,7 +81,7 @@ class Tracking(db.Model):
     created_on = db.Column(db.DateTime, server_default=db.func.now())
     post_ID = db.Column(db.Integer, nullable=False)
     user_ID = db.Column(db.Integer, nullable=False)
-    ip = db.Column(db.Integer, nullable=False)
+    ip = db.Column(db.String, nullable=False)
     
     def __init__(self, post_ID, user_ID, ip):
         self.post_ID = post_ID
