@@ -67,7 +67,7 @@ def points():
 
 
 class changeratevalidator(Form):
-  rate = TextField('rate',validators=[required()])
+	rate = TextField('rate',validators=[required()])
 
 @main_blueprint.route('/showusers', methods=['GET', 'POST'])
 @login_required
@@ -85,7 +85,7 @@ def showusers():
 	#flash(user.usertype, "warning")
 	if form.validate_on_submit():
 		user.usertype = form.rate.data
-  	db.session.commit()
+		db.session.commit()
 
 	if current_user.usertype > 1:
 		flash("yes you are affiliated", "warning")
@@ -356,8 +356,7 @@ from sqlalchemy import func
 def payuser():
 	if not current_user.admin:
 		redirect('/')
-	elements = User.query.join(Transaction, User.id == Transaction.user_ID) \
-     .add_columns(User.id,User.name, func.sum(Transaction.amount)).group_by(User.id).all()
+	elements = User.query.join(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, func.sum(Transaction.amount)).group_by(User.id).all()
 
-  return render_template('main/payuser.html', elements = elements)
+	return render_template("main/payuser.html", elements = elements)
 
