@@ -350,13 +350,14 @@ def payment():
 			return redirect(url_for('main.payment'))
 	return render_template("main/payment.html", payments = listofpayments, payfor = payfor, form = form, unpaidpoints = unpaidpoints, totalamount = totalamount)
 
+from sqlalchemy import func
 @main_blueprint.route('/payuser', methods=(['GET']))
 @login_required
 def payuser():
 	if not current_user.admin:
 		redirect('/')
 	elements = User.query.join(Transaction, User.id == Transaction.user_ID) \
-		.add_columns(User.id,User.name, Transaction.amount.sum()).all()
+		.add_columns(User.id,User.name, func.sum(Transaction.amount)).all()
 
 	return render_template_string(main_query)
 
