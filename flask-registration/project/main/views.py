@@ -357,7 +357,7 @@ def payuser():
 	if not current_user.admin:
 		redirect('/')
 	elements = User.query.join(Transaction, User.id == Transaction.user_ID) \
-		.add_columns(User.id,User.name, func.sum(Transaction.amount)).all()
+     .add_columns(User.id,User.name, func.sum(Transaction.amount)).group_by(User.id).all()
 
-	return render_template_string(main_query)
+  return render_template('main/payuser.html', elements = elements)
 
