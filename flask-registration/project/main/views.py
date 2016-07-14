@@ -357,7 +357,9 @@ def payuser():
 	if not current_user.admin:
 		redirect('/')
 	# elements = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, func.sum(Transaction.amount)).group_by(User.id)
-	elements = User.query.outerjoin(Transaction, User.id == Transaction.user_ID)..add_columns(User.id,User.name, func.sum(Transaction.amount))
-
-	return render_template("main/payuser.html", elements = elements)
+	elements = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id)
+	unpaid = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).order_by(User.id)
+	
+		
+	return render_template("main/payuser.html", elements = elements, unpaid = unpaid)
 

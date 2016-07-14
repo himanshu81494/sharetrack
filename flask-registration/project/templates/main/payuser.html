@@ -1,7 +1,25 @@
 {% extends "_base.html" %}
 {% block content %}
-{% for item in elements %}
-{{item.id}}
-{{item.name}}
+{% if elements %}
+<table class="table">
+  <thead>
+    <tr>
+    
+      <th>userid</th>
+      <th>username</th>
+      <th>useremail</th>
+      <th>sum_amount</th>
+      <th>unpaid</th>
+    </tr>
+  </thead>
+  <tbody>
+
+{% for item in elements and item2 in inpaid %}
+<tr>
+<th>{{ item.id }}</th>
+<th>{{ item.name }}</th>
+<th>{{ item.email }}</th>
+<th>{{ item.summ }}</th>
+<th>{{ item2.sumpoints - item.summ }}</th>
 {% endfor %}
 {% endblock %}
