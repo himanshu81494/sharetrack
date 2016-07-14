@@ -14,19 +14,17 @@
   </thead>
   <tbody>
 
-{% for item in elements  %}
+{% for i in range(elements.len())  %}
 <tr>
-<th>{{ item.id }}</th>
-<th>{{ item.name }}</th>
-<th>{{ item.email }}</th>
-<th>{{ item.summ }}</th>
+<th>{{ elements[i].id }}</th>
+<th>{{ elements[i].name }}</th>
+<th>{{ elements[i].email }}</th>
+<th>{{ elements[i].summ }}</th>
+<th>{{ unpaid[i].sumpoints }}</th>
 
 {% endfor %}
 </tr>
 </tbody>
 </table>
-{% for item in unpaid  %}
-{{ item.sumpoints }}
-{% endfor %}
 {% endif %}
 {% endblock %}
