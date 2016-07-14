@@ -350,5 +350,15 @@ def payment():
 			return redirect(url_for('main.payment'))
 	return render_template("main/payment.html", payments = listofpayments, payfor = payfor, form = form, unpaidpoints = unpaidpoints, totalamount = totalamount)
 
+@main_blueprint.route('/payuser', methods=(['GET']))
+@login_required
+def payuser():
+	if not current_user.admin:
+		redirect('/')
+	item = (select([User.id, User.name, func.sum(Transaction.amount).label('tracking_amount')])
+		.where(User.id == Transaction.user_ID)
+		).as_scalar()
+	main_query = select([item])
 
+	return render_template_string(main_query)
 
