@@ -14,13 +14,16 @@
   </thead>
   <tbody>
 
-{% for item in elements and item2 in unpaid %}
+{% for item in elements  %}
 <tr>
 <th>{{ item.id }}</th>
 <th>{{ item.name }}</th>
 <th>{{ item.email }}</th>
 <th>{{ item.summ }}</th>
-<th>{{ item2.sumpoints - item.summ }}</th>
+
 {% endfor %}
+</tr>
+</tbody>
+</table>
 {% endif %}
 {% endblock %}
