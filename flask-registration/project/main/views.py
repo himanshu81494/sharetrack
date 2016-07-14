@@ -182,12 +182,12 @@ def showpost(code):
 	if( Tracking.query.filter(Tracking.post_ID == singlepost.id).filter( Tracking.ip == request.remote_addr).filter(Tracking.user_ID == user_code).scalar() is None):
 		newtrack = Tracking(singlepost.id, user_code , request.remote_addr)
 		db.session.add(newtrack)
-		#db.session.commit()
+		db.session.commit()
 	
 		if( Points.query.filter(Points.post_ID == singlepost.id).filter(Points.user_ID == user_code).scalar() is None):
 			newpoint = Points(user_code, singlepost.id, 1)
 			db.session.add(newpoint)
-			#db.session.commit()
+			db.session.commit()
 
 		else:
 			element = Points.query.filter(Points.post_ID == singlepost.id).filter(Points.user_ID == user_code).first()
@@ -328,11 +328,12 @@ def payment():
 			flash("showing all payments", "warning")
 			totalamount = sum([item.amount for item in listofpayments])
 	else:
-		flash("last payment made on: {}".format(listofpayments[0].created_on), "warning")
-		unpaidpoints = Tracking.query.filter(Tracking.user_ID == current_user.id).filter(Tracking.created_on > listofpayments[0].created_on).count()
-		rate = User.query.filter(User.id == 1).first()
-		flash("unpaidpoints :%d, %d"%(unpaidpoints, rate.usertype*unpaidpoints), "warning")
-		totalamount = sum([item.amount for item in listofpayments])
+		if Transaction.query.filter(Transaction.user_ID == current_user.id).count() > 0:
+			flash("last payment made on: {}".format(listofpayments[0].created_on), "warning")
+			unpaidpoints = Tracking.query.filter(Tracking.user_ID == current_user.id).filter(Tracking.created_on > listofpayments[0].created_on).count()
+			rate = User.query.filter(User.id == 1).first()
+			flash("unpaidpoints :%d, %d"%(unpaidpoints, rate.usertype*unpaidpoints), "warning")
+			totalamount = sum([item.amount for item in listofpayments])
 	
 		
 			

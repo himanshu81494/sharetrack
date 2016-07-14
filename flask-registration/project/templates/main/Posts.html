@@ -6,7 +6,7 @@
   <thead>
     <tr>
       <th>#</th>
-
+<th>@</th>
       <th>post_title</th>
       <th>post_link</th>
       <th>post_image</th>
@@ -19,7 +19,7 @@
 {% for obj in posts %}
 <tr>
 <th>{{ obj.id }}</th>
-
+<td><a href="/?deletepostbyid={{ obj.id }}">X</td></a>
 <td>{{ obj.post_title }}</td>
 <td>{{ obj.post_link }}</td>
 <td><a href={{ obj.post_image }}>[I]</a></td>
