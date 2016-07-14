@@ -20,7 +20,7 @@
 {% for obj in posts %}
 <tr>
 <th>{{ obj.id }}</th>
-{% if current_user.admin %}<td><a href="/showposts/?deletepostbyid={{ obj.id }}">X</a></td>{% endif %}
+{% if current_user.admin %}<td><a href="/showposts?deletepostbyid={{ obj.id }}">X</a></td>{% endif %}
 <td>{{ obj.post_title }}</td>
 <td>{{ obj.post_link }}</td>
 <td><a href={{ obj.post_image }}>[I]</a></td>
