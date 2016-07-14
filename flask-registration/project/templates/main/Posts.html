@@ -5,8 +5,9 @@
 <table class="table">
   <thead>
     <tr>
-      <th>#</th>
-<th>@</th>
+    <th>@</th>
+    {% if current_user.admin %}<th>#</th>{% endif %}
+
       <th>post_title</th>
       <th>post_link</th>
       <th>post_image</th>
@@ -19,7 +20,7 @@
 {% for obj in posts %}
 <tr>
 <th>{{ obj.id }}</th>
-<td><a href="/?deletepostbyid={{ obj.id }}">X</td></a>
+{% if current_user.admin %}<td><a href="/?deletepostbyid={{ obj.id }}">X</a></td>{% endif %}
 <td>{{ obj.post_title }}</td>
 <td>{{ obj.post_link }}</td>
 <td><a href={{ obj.post_image }}>[I]</a></td>
