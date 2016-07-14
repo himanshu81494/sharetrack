@@ -75,11 +75,6 @@ def showusers():
 	if not current_user.admin:
 		return redirect('/')
 	
-	deleteuserbyid = request.args.get('deleteuserbyid')
-	if deleteuserbyid > 0:
-			User.query.filter(User.id == deleteuserbyid).delete()
-			db.session.commit()
-	
 	form = changeratevalidator()
 	user = User.query.filter(User.id == current_user.id).first()
 	#flash(user.usertype, "warning")
