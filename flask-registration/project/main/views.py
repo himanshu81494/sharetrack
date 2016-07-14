@@ -355,10 +355,8 @@ def payment():
 def payuser():
 	if not current_user.admin:
 		redirect('/')
-	item = (select([User.id, User.name, func.sum(Transaction.amount).label('tracking_amount')])
-		.where(User.id == Transaction.user_ID)
-		).as_scalar()
-	main_query = select([item])
+	elements = User.query.join(Transaction, User.id == Transaction.user_ID) \
+		.add_columns(User.id,User.name, Transaction.amount.sum()).all()
 
 	return render_template_string(main_query)
 
