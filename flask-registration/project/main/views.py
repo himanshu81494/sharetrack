@@ -179,12 +179,12 @@ def showpost(code):
 		tup = hashids.decode(user_code)
 		user_code = float(tup[0])
 
-	if( Tracking.query.filter(Tracking.post_ID == singlepost.id).filter( Tracking.ip == request.remote_addr).filter(Tracking.user_ID == user_code).count() == 0):
+	if( Tracking.query.filter(Tracking.post_ID == singlepost.id).filter( Tracking.ip == request.remote_addr).filter(Tracking.user_ID == user_code).scalar() is None):
 		newtrack = Tracking(singlepost.id, user_code , request.remote_addr)
 		db.session.add(newtrack)
 		#db.session.commit()
 	
-		if( Points.query.filter(Points.post_ID == singlepost.id).filter(Points.user_ID == user_code).count() == 0):
+		if( Points.query.filter(Points.post_ID == singlepost.id).filter(Points.user_ID == user_code).scalar() is None):
 			newpoint = Points(user_code, singlepost.id, 1)
 			db.session.add(newpoint)
 			#db.session.commit()
