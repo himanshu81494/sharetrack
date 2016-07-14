@@ -330,10 +330,10 @@ def payment():
 	else:
 		if Transaction.query.filter(Transaction.user_ID == current_user.id).count() > 0:
 			flash("last payment made on: {}".format(listofpayments[0].created_on), "warning")
-			unpaidpoints = Tracking.query.filter(Tracking.user_ID == current_user.id).filter(Tracking.created_on > listofpayments[0].created_on).count()
-			rate = User.query.filter(User.id == 1).first()
-			flash("unpaidpoints :%d, %d"%(unpaidpoints, rate.usertype*unpaidpoints), "warning")
-			totalamount = sum([item.amount for item in listofpayments])
+		unpaidpoints = Tracking.query.filter(Tracking.user_ID == current_user.id).filter(Tracking.created_on > listofpayments[0].created_on).count()
+		rate = User.query.filter(User.id == 1).first()
+		flash("unpaidpoints :%d, %d"%(unpaidpoints, rate.usertype*unpaidpoints), "warning")
+		totalamount = sum([item.amount for item in listofpayments])
 	
 		
 			
