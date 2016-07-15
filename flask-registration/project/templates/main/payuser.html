@@ -1,6 +1,7 @@
 {% extends "_base.html" %}
 {% block content %}
 {% if combined %}
+{{rate}}
 <table class="table">
   <thead>
     <tr>
@@ -9,8 +10,8 @@
       <th>username</th>
       <th>useremail</th>
       <th>total paid</th>
+      <th>total unpaid points</th>
       <th>total amount</th>
-      <th>total unpaid</th>
     </tr>
   </thead>
   <tbody>
@@ -21,17 +22,9 @@
 <th>{{ item1.name }}</th>
 <th>{{ item1.email }}</th>
 <th>{{ item1.summ }}</th>
-<th>{{ item2.sumpoints }}</th>
+<th>{{ item2.trackingcount  }}</th>
+<th>{{ item2.trackingcount * rate  }}</th>
 
-<th>
-{% if item2.sumpoints > 0 %}
-{% if item1.summ > 0 %}
-{{ item2.sumpoints - item1.summ }}
-{% else %}
-{{ item2.sumpoints }}
-{% endif %}
-{% endif %}
-</th>
 
 {% endfor %}
 </tr>

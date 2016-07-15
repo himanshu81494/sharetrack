@@ -321,13 +321,12 @@ def payment():
 		flash("showing all payments", "warning")
 		totalamount = sum([item.amount for item in listofpayments])
 	else:
-		if Transaction.query.filter(Transaction.user_ID == current_user.id).count() > 0:
-			flash("last payment made on: {}".format(listofpayments[0].created_on), "warning")
 		rate = User.query.filter(User.id == 1).first()
 		totalamount = sum([item.amount for item in listofpayments])
 
 	if not current_user.admin:
 		paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id).filter(User.id == current_user.id)
+		unpaid = User.query.outerjoin(Tracking, Tracking.user_ID == User.id).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, func.count(Tracking.id).label('trackings')).group_by(User.id).filter(User.id == current_user.id)
 		total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id).filter(User.id == current_user.id)
 		combined = zip(paid, total)
 		return render_template("main/payment.html", payments = listofpayments, form = form, unpaidpoints = unpaidpoints, totalamount = totalamount, combined = combined)
@@ -342,6 +341,10 @@ def payment():
 			)
 			db.session.add(new_payment)
 			db.session.commit()
+			user = User.query.filter(User.id == userid)
+			user.lastpaidon = datetime.now()
+			db.session.commit()
+
 			return redirect(url_for('main.payment'))
 	return render_template("main/payment.html", payments = listofpayments, payfor = payfor, form = form, unpaidpoints = unpaidpoints, totalamount = totalamount)
 
@@ -353,8 +356,10 @@ def payuser():
 		redirect('/')
 	# elements = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, func.sum(Transaction.amount)).group_by(User.id)
 	paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id)
-	total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id)
+	unpaid = User.query.outerjoin(Tracking, Tracking.user_ID == User.id).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, func.count(Tracking.id).label('trackingcount')).group_by(User.id).filter(User.id == current_user.id)
+	rate = User.query.filter(User.id == 1).first()
+	
 	
 		
-	return render_template("main/payuser.html", combined = zip(paid, total))
+	return render_template("main/payuser.html", combined = zip(paid, unpaid), rate = rate)
 

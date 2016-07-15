@@ -20,7 +20,7 @@ class User(db.Model):
     usertype = db.Column(db.Integer, nullable=False, default=0)
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
     confirmed_on = db.Column(db.DateTime, nullable=True)
-
+    lastpaidon = db.Column(db.DateTime)
     name = db.Column(db.String, default="")
     phoneno = db.Column(db.String, default="")
     city = db.Column(db.String, default="")
@@ -35,7 +35,7 @@ class User(db.Model):
     ifsc_code = db.Column(db.String, default="")
     branch_address = db.Column(db.String, default="")
     def __init__(self, email, password, confirmed,
-                 admin=False,usertype=0, confirmed_on=None, name="",phoneno="",  city="", country='' ,profile='', page='', account_holdername='', bank_name='', account_number='', swift_code='', iban_number='', ifsc_code='', branch_address=''):
+                 admin=False,usertype=0, confirmed_on=None, name="",phoneno="",  city="", country='' ,profile='', page='', account_holdername='', bank_name='', account_number='', swift_code='', iban_number='', ifsc_code='', branch_address='', lastpaidon=datetime.now()):
         self.email = email
         self.password = bcrypt.generate_password_hash(password)
         self.registered_on = datetime.datetime.now()
@@ -56,6 +56,7 @@ class User(db.Model):
         self.iban_number = iban_number
         self.ifsc_code = ifsc_code
         self.branch_address = branch_address
+        self.lastpaidon = lastpaidon
 
     def is_authenticated(self):
         return True
