@@ -325,8 +325,12 @@ def payment():
 			flash("last payment made on: {}".format(listofpayments[0].created_on), "warning")
 		rate = User.query.filter(User.id == 1).first()
 		totalamount = sum([item.amount for item in listofpayments])
-	
-		
+
+	if not current_user.admin:
+		paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id).filter(User.id == current_user.id)
+		total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id).filter(User.id == current_user.id)
+		combined = zip(paid, total)
+		return render_template("main/payment.html", payments = listofpayments, form = form, unpaidpoints = unpaidpoints, totalamount = totalamount, combined = combined)
 			
 
 	if payfor and int(payfor) > 0 and current_user.admin and int(userid) > 0:
@@ -348,9 +352,9 @@ def payuser():
 	if not current_user.admin:
 		redirect('/')
 	# elements = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, func.sum(Transaction.amount)).group_by(User.id)
-	elements = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id)
-	unpaid = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id)
+	paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id)
+	total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id)
 	
 		
-	return render_template("main/payuser.html", combined = zip(elements, unpaid))
+	return render_template("main/payuser.html", combined = zip(paid, total))
 
