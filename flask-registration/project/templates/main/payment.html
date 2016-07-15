@@ -26,6 +26,12 @@
 your unpaidpoints: {{ unpaidpoints }}
 {% endif %}
 
+{% if combined %}
+{% for item1, item2 in combined %}
+{{item1.email}}, {{item1.summ}}, {{item2.sumpoints}}
+{% endfor %}
+{% endif %}
+
 {% if payments %}
 <table class="table">
   <thead>

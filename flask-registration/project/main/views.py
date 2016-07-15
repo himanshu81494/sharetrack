@@ -325,11 +325,11 @@ def payment():
 		totalamount = sum([item.amount for item in listofpayments])
 
 	if not current_user.admin:
-		paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id).filter(User.id == current_user.id)
+		# paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id).filter(User.id == current_user.id)
 		unpaid = User.query.outerjoin(Tracking, Tracking.user_ID == User.id).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, func.count(Tracking.id).label('trackings')).group_by(User.id).filter(User.id == current_user.id)
 		total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id).filter(User.id == current_user.id)
-		combined = zip(paid, total)
-		return render_template("main/payment.html", payments = listofpayments, form = form, unpaidpoints = unpaidpoints, totalamount = totalamount, combined = combined)
+		
+		return render_template("main/payment.html", payments = listofpayments, form = form, unpaidpoints = unpaid)
 			
 
 	if payfor and int(payfor) > 0 and current_user.admin and int(userid) > 0:
