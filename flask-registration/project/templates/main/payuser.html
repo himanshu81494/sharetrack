@@ -22,8 +22,10 @@
 <th>{{ item1.name }}</th>
 <th>{{ item1.email }}</th>
 <th>{{ item1.summ }}</th>
-<th>{{ item2.trackingcount }} * {{rate}}</th>
+<th>{{ item2.trackingcount - item1.summ }} * {{rate}}</th>
+{% if item2.trackingcount - item1.summ %}
 <th>{{ (item2.trackingcount - item1.summ) * rate}}</th>
+{% endif %}
 
 
 {% endfor %}
