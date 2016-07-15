@@ -33,8 +33,14 @@ your unpaidpoints: {{ unpaidpoints }}
 {% endif %}
 
 {% if unpaid %}
-<h2>unpaid</h2>
+<h2>unpaid points: {{unpaid}}</h2>
 {% endif %}
+<h3><b>
+{% if current_user.admin %}total amount distributed
+{% else %}
+total amount earned
+{% endif %}
+{{ totalamount }}</b></h3>
 {% if payments %}
 <table class="table">
   <thead>
@@ -62,12 +68,7 @@ your unpaidpoints: {{ unpaidpoints }}
 {% endif %}
 </tr>
 {% endfor %}
-<div class="alert alert-success" role="alert"><b>
-{% if current_user.admin %}total amount distributed
-{% else %}
-total amount earned
-{% endif %}
-{{ totalamount }}</b></div>
+
 
 </tbody>
 </table>
