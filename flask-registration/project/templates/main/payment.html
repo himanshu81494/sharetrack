@@ -22,28 +22,23 @@
 </div>
 {% endif %}
 {% endif %}
+
 {% if unpaidpoints %}
 your unpaidpoints: {{ unpaidpoints }}
 {% endif %}
 
-{% if combined %}
-{% for item1, item2 in combined %}
-{{item1.email}}, {{item1.summ}}, {{item2.sumpoints}}
-{% endfor %}
-{% endif %}
 
 {% if unpaid %}
-<h2>unpaid points: {{unpaid}}</h2>
+<b>unpaid points: {{unpaid}}</b>
 {% endif %}
-<h3><b>
 {% if current_user.admin %}total amount distributed
 {% else %}
 total amount earned
 {% endif %}
-{{ totalamount }}</b></h3>
+{{ totalamount }}</b>
 {% if payments %}
 {% if rate %}
-<b>{{rate}}</b>
+<b>current rate: {{rate}}</b>
 {% endif %}
 <table class="table">
   <thead>
