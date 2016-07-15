@@ -7,11 +7,10 @@
     <tr>
     
       <th>userid</th>
-      <th>username</th>
+      <th>lastpayment date</th>
       <th>useremail</th>
-      <th>total paid</th>
-      <th>total unpaid points</th>
-      <th>total amount</th>
+      <th>unpaid points</th>
+      <th>payment remaining</th>
     </tr>
   </thead>
   <tbody>
@@ -26,7 +25,7 @@
 {% if item.trackingcount %}
 <th>{{ item.trackingcount}} * {{rate}}</th>
 {% endif %}
-
+<th><a href="/payment?userid={{ item.id }}&payfor={{ item.id }}">pay</a></th>
 
 {% endfor %}
 </tr>
