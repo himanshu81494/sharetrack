@@ -328,8 +328,7 @@ def payment():
 		# paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id).filter(User.id == current_user.id)
 		unpaid = User.query.outerjoin(Tracking, Tracking.user_ID == User.id).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, func.count(Tracking.id).label('trackings')).group_by(User.id).filter(User.id == current_user.id)
 		total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id).filter(User.id == current_user.id)
-		
-		return render_template("main/payment.html", payments = listofpayments, form = form, unpaidpoints = unpaid)
+		flash(unpaid ,"warning")
 			
 
 	if payfor and int(payfor) > 0 and current_user.admin and int(userid) > 0:
