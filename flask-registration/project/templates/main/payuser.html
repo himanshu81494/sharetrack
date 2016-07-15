@@ -22,7 +22,7 @@
 <th>{{ item1.summ }}</th>
 <th>{{ item2.sumpoints }}</th>
 
-<th>{{ item2.sumpoints - item1.summ }}</th>
+<th>{{ int(item2.sumpoints) - int(item1.summ) }}</th>
 
 {% endfor %}
 </tr>
