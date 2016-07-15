@@ -329,7 +329,8 @@ def payment():
 		unpaid = Tracking.query.filter(Tracking.user_ID == current_user.id).filter(Tracking.created_on > current_user.lastpaidon).count()
 		
 		total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id).filter(User.id == current_user.id)
-		flash(unpaid.trackingcount ,"warning")
+		if unpaid:
+			flash(unpaid ,"warning")
 			
 
 	if payfor and int(payfor) > 0 and current_user.admin and int(userid) > 0:
