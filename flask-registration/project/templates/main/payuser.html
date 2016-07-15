@@ -19,12 +19,12 @@
 {% for item in combined  %}
 <tr>
 <th>{{ item.id }}</th>
-<th>{{ item1.lastpaidon }}</th>
-<th>{{ item1.email }}</th>
-<th>{{ item2.trackingcount }}</th>
+<th>{{ item.lastpaidon }}</th>
+<th>{{ item.email }}</th>
+<th>{{ item.trackingcount }}</th>
 
-{% if item2.trackingcount %}
-<th>{{ item2.trackingcount}} * {{rate}}</th>
+{% if item.trackingcount %}
+<th>{{ item.trackingcount}} * {{rate}}</th>
 {% endif %}
 
 
