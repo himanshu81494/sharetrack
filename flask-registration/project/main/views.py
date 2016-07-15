@@ -130,7 +130,7 @@ def showposts():
 		pointsofpast = Tracking.query.filter(Tracking.user_ID == current_user.id).filter(Tracking.created_on >= (datetime.now() - timedelta(15))).count()
 		pointsofyesterday = Tracking.query.filter(Tracking.user_ID == current_user.id).filter(Tracking.created_on >= (datetime.now() - timedelta(1))).count()
 
-		flash(datetime.now(), "warning")
+		# flash(datetime.now(), "warning")
 		# flash(datetime.now()-timedelta(15), "warning")
 
 		return render_template("main/Posts.html", title="all posts", posts = posts, ref = hashids.encode(current_user.id), pointsofpast = pointsofpast, pointsofyesterday=pointsofyesterday)
@@ -284,15 +284,11 @@ def userdetails():
 		
 		db.session.commit()
 		return redirect('/')
-	if Transaction.query.filter(Transaction.user_ID == ID).order_by(Transaction.created_on.desc()).count() > 0:
-		listofpayments = Transaction.query.filter(Transaction.user_ID == ID).order_by(Transaction.created_on.desc())
-		flash("last payment made on: {}".format(listofpayments[0].created_on), "warning")
-		unpaidpoints = Tracking.query.filter(Tracking.user_ID == ID).filter(Tracking.created_on > listofpayments[0].created_on).count()
-		rate = User.query.filter(User.id == 1).first()
-		flash("unpaidpoints :%d, %d"%(unpaidpoints, rate.usertype*unpaidpoints), "warning")
-		# flash(, "warning")
-
-	return render_template('main/userdetails.html', form=form, user = user)
+	paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id).filter(User.id == ID)
+	total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id).filter(User.id == ID)
+	
+	
+	return render_template('main/userdetails.html', form=form, user = user, combined = zip(paid, total))
 
 
 class paymentvalidator(Form):
