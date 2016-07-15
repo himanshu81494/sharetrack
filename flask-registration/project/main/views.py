@@ -363,5 +363,5 @@ def payuser():
 	
 	
 		
-	return render_template("main/payuser.html", paid=paid, unpaid = unpaid)
+	return render_template("main/payuser.html", combined = zip(paid, unpaid))
 

@@ -1,7 +1,7 @@
 {% extends "_base.html" %}
 {% block content %}
 {{rate}}
-{% if paid %}
+{% if combined %}
 <table class="table">
   <thead>
     <tr>
@@ -16,23 +16,14 @@
   </thead>
   <tbody>
 
-{% for item1 in paid  %}
+{% for item1, item2 in combined  %}
 <tr>
 <th>{{ item1.id }}</th>
 <th>{{ item1.name }}</th>
 <th>{{ item1.email }}</th>
 <th>{{ item1.summ }}</th>
+<th>{{ item2.trackingcount }}</th>
 
-
-{% endfor %}
-</tr>
-<hr>
-{% for item1 in unpaid  %}
-<tr>
-<th>{{ item1.id }}</th>
-
-<th>{{ item1.trackingcount }}</th>
-</tr>
 
 {% endfor %}
 </tr>
