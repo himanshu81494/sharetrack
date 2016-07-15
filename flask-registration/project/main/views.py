@@ -306,7 +306,13 @@ def payment():
 	listofpayments = Transaction.query.filter(Transaction.user_ID == current_user.id).order_by(Transaction.created_on.desc())
 	userid = request.args.get('userid')
 	payfor = request.args.get('payfor')
-	
+	if current_user.admin:
+		if Transaction.query.order_by(Transaction.created_on.desc()).count() > 0:
+			listofpayments = Transaction.query.order_by(Transaction.created_on.desc()).all()
+			# listofpayments = Transaction.query.all()
+		flash("showing all payments", "warning")
+		totalamount = sum([item.amount for item in listofpayments])
+	'''
 	if current_user.admin and userid and int(userid) > 0:
 		if Transaction.query.filter(Transaction.user_ID == int(userid)).count() > 0:
 			listofpayments = Transaction.query.filter(Transaction.user_ID == int(userid)).order_by(Transaction.created_on.desc())
@@ -323,12 +329,11 @@ def payment():
 	else:
 		rate = User.query.filter(User.id == 1).first()
 		totalamount = sum([item.amount for item in listofpayments])
-
-	if not current_user.admin:
-		# paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id).filter(User.id == current_user.id)
-		unpaid = Tracking.query.filter(Tracking.user_ID == current_user.id).filter(Tracking.created_on > current_user.lastpaidon).count()
-		
-		total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id).filter(User.id == current_user.id)
+'''
+	# paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id).filter(User.id == current_user.id)
+	unpaid = Tracking.query.filter(Tracking.user_ID == current_user.id).filter(Tracking.created_on > current_user.lastpaidon).count()
+	
+	total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id).filter(User.id == current_user.id)
 			
 
 	if payfor and int(payfor) > 0 and current_user.admin and int(userid) > 0:
