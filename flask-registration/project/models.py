@@ -18,7 +18,7 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
     registered_on = db.Column(db.DateTime, nullable=False)
     admin = db.Column(db.Boolean, nullable=False, default=False)
-    usertype = db.Column(db.Integer, nullable=False, default=0)
+    usertype = db.Column(db.Double, nullable=False, default=0)
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
     confirmed_on = db.Column(db.DateTime, nullable=True)
     lastpaidon = db.Column(db.DateTime, nullable=True, default = (datetime.now() - timedelta(5000)))
