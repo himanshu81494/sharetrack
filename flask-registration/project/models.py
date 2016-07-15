@@ -35,7 +35,7 @@ class User(db.Model):
     ifsc_code = db.Column(db.String, default="")
     branch_address = db.Column(db.String, default="")
     def __init__(self, email, password, confirmed,
-                 admin=False,usertype=0, confirmed_on=None, name="",phoneno="",  city="", country='' ,profile='', page='', account_holdername='', bank_name='', account_number='', swift_code='', iban_number='', ifsc_code='', branch_address='', lastpaidon=datetime.now()):
+                 admin=False,usertype=0, confirmed_on=None, name="",phoneno="",  city="", country='' ,profile='', page='', account_holdername='', bank_name='', account_number='', swift_code='', iban_number='', ifsc_code='', branch_address='', lastpaidon=datetime.datetime.now()):
         self.email = email
         self.password = bcrypt.generate_password_hash(password)
         self.registered_on = datetime.datetime.now()
