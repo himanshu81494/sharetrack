@@ -1,8 +1,48 @@
 {% extends "_base.html" %}
 {% from 'main/common.html' import edit_field %}
 {% block content %}
+
+{% if combined %}
+<table class="table">
+  <thead>
+    <tr>
+    
+      <th>userid</th>
+      <th>username</th>
+      <th>useremail</th>
+      <th>total paid</th>
+      <th>total amount</th>
+      <th>total unpaid</th>
+    </tr>
+  </thead>
+  <tbody>
+
+{% for item1, item2 in combined  %}
+<tr>
+<th>{{ item1.id }}</th>
+<th>{{ item1.name }}</th>
+<th>{{ item1.email }}</th>
+<th>{{ item1.summ }}</th>
+<th>{{ item2.sumpoints }}</th>
+
+<th>
+{% if item2.sumpoints > 0 %}
+{% if item1.summ > 0 %}
+{{ item2.sumpoints - item1.summ }}
+{% else %}
+{{ item2.sumpoints }}
+{% endif %}
+{% endif %}
+</th>
+
+{% endfor %}
+</tr>
+</tbody>
+</table>
+{% endif %}
+
 {% if current_user.admin %}
-<a href="/payment?userid={{ user.id }}&payfor={{ user.id }}">pay this user</a>
+<a href="/payment?userid={{ user.id }}&payfor={{ user.id }}"><button class="btn">pay this user</button></a>
 {% endif %}
 
 <div class='edit well offset 2 span8'>
@@ -56,42 +96,5 @@
     </form>
 </div>
 
-{% if combined %}
-<table class="table">
-  <thead>
-    <tr>
-    
-      <th>userid</th>
-      <th>username</th>
-      <th>useremail</th>
-      <th>total paid</th>
-      <th>total amount</th>
-      <th>total unpaid</th>
-    </tr>
-  </thead>
-  <tbody>
 
-{% for item1, item2 in combined  %}
-<tr>
-<th>{{ item1.id }}</th>
-<th>{{ item1.name }}</th>
-<th>{{ item1.email }}</th>
-<th>{{ item1.summ }}</th>
-<th>{{ item2.sumpoints }}</th>
-
-<th>
-{% if item2.sumpoints > 0 %}
-{% if item1.summ > 0 %}
-{{ item2.sumpoints - item1.summ }}
-{% else %}
-{{ item2.sumpoints }}
-{% endif %}
-{% endif %}
-</th>
-
-{% endfor %}
-</tr>
-</tbody>
-</table>
-{% endif %}
 {% endblock %}
