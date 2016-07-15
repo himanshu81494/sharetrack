@@ -42,6 +42,9 @@ total amount earned
 {% endif %}
 {{ totalamount }}</b></h3>
 {% if payments %}
+{% if rate %}
+<b>{{rate}}</b>
+{% endif %}
 <table class="table">
   <thead>
     <tr>
