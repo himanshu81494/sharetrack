@@ -361,5 +361,5 @@ def payuser():
 	unpaid = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id)
 	
 		
-	return render_template("main/payuser.html", elements = elements, unpaid = unpaid)
+	return render_template("main/payuser.html", combined = zip(elements, unpaid))
 
