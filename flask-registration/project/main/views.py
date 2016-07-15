@@ -357,11 +357,11 @@ def payuser():
 	# elements = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, func.sum(Transaction.amount)).group_by(User.id)
 	paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.lastpaidon, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id)
 	# unpaid = User.query.outerjoin(Tracking, User.id == Tracking.user_ID).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, func.count(Tracking.id).label('trackingcount')).group_by(User.id).filter(User.id == current_user.id)
-	unpaid = User.query.outerjoin(Tracking, User.id == Tracking.user_ID).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, func.count(Tracking.id).label('trackingcount')).group_by(User.id)
+	unpaid = User.query.outerjoin(Tracking, User.id == Tracking.user_ID).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, User.lastpaidon,User.email, User.name, func.count(Tracking.id).label('trackingcount')).group_by(User.id)
 
 	rate = User.query.filter(User.id == 1).first()
 	
 	
 		
-	return render_template("main/payuser.html", combined = zip(paid, unpaid), rate = rate.usertype)
+	return render_template("main/payuser.html", combined = unpaid, rate = rate.usertype)
 
