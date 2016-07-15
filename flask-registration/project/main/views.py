@@ -359,9 +359,9 @@ def payuser():
 	# unpaid = User.query.outerjoin(Tracking, User.id == Tracking.user_ID).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, func.count(Tracking.id).label('trackingcount')).group_by(User.id).filter(User.id == current_user.id)
 	unpaid = User.query.outerjoin(Tracking, User.id == Tracking.user_ID).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, func.count(Tracking.id).label('trackingcount')).group_by(User.id)
 
-	# rate = User.query.filter(User.id == 1).first()
+	rate = User.query.filter(User.id == 1).first()
 	
 	
 		
-	return render_template("main/payuser.html", combined = zip(paid, unpaid))
+	return render_template("main/payuser.html", combined = zip(paid, unpaid), rate = rate)
 
