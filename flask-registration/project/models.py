@@ -39,7 +39,7 @@ class User(db.Model):
                  admin=False,usertype=0, confirmed_on=None, name="",phoneno="",  city="", country='' ,profile='', page='', account_holdername='', bank_name='', account_number='', swift_code='', iban_number='', ifsc_code='', branch_address=''):
         self.email = email
         self.password = bcrypt.generate_password_hash(password)
-        self.registered_on = datetime.datetime.now()
+        self.registered_on = datetime.now()
         self.admin = admin
         self.usertype = usertype
         self.confirmed = confirmed
