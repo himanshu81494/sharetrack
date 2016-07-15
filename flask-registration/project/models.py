@@ -20,7 +20,7 @@ class User(db.Model):
     usertype = db.Column(db.Integer, nullable=False, default=0)
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
     confirmed_on = db.Column(db.DateTime, nullable=True)
-    lastpaidon = db.Column(db.DateTime)
+    lastpaidon = db.Column(db.DateTime, nullable=True, default = (datetime.now() - timedelta(5000)))
     name = db.Column(db.String, default="")
     phoneno = db.Column(db.String, default="")
     city = db.Column(db.String, default="")
