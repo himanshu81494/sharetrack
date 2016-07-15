@@ -347,7 +347,7 @@ def payment():
 			db.session.commit()
 
 			return redirect(url_for('main.payment'))
-	return render_template("main/payment.html", payments = listofpayments, payfor = payfor, form = form, unpaidpoints = unpaidpoints, totalamount = totalamount)
+	return render_template("main/payment.html", payments = listofpayments, payfor = payfor, form = form, unpaidpoints = unpaidpoints, totalamount = totalamount, unpaid = unpaid)
 
 from sqlalchemy import func
 @main_blueprint.route('/payuser', methods=(['GET']))

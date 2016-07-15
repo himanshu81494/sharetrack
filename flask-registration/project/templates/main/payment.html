@@ -32,6 +32,9 @@ your unpaidpoints: {{ unpaidpoints }}
 {% endfor %}
 {% endif %}
 
+{% if unpaid %}
+<h2>unpaid</h2>
+{% endif %}
 {% if payments %}
 <table class="table">
   <thead>
