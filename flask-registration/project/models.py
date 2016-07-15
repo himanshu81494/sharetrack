@@ -3,7 +3,8 @@
 
 """
 
-import datetime, timedelta
+import datetime
+from datetime import timedelta
 
 from project import db, bcrypt
 
