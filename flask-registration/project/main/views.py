@@ -298,7 +298,7 @@ def userdetails():
 
 	rate = User.query.filter(User.id == 1).first()
 
-	return render_template('main/userdetails.html', form=form, user = user, rate=rate, paidtilldate=paid, unpaidtilldate = unpaid)
+	return render_template('main/userdetails.html', form=form, user = user, rate=rate.usertype, paidtilldate=paid, unpaidtilldate = unpaid)
 
 
 class paymentvalidator(Form):
