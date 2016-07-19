@@ -123,15 +123,12 @@ def showposts():
 	rate = User.query.filter(User.id == 1).first()
 	
 	posts = Posts.query.order_by(Posts.id.desc()).all()
-	for item in posts:
-		q = Points.query.filter(Points.user_ID == current_user.id)
-		if q and q.earned_points:
-			earned_points = q.earned_points
-		else:
-			earned_points = 0
+	
 	if current_user.usertype > 0:
-		# posts = Posts.query.outerjoin(Points, Posts.id == Points.post_ID) \
+		posts = Posts.query.outerjoin(Points, Posts.id == Points.post_ID) \
+		.add_columns(Points.earned_points, Posts.post_title, Posts.id, Posts.post_link, Posts.post_image, Posts.post_code, Posts.post_description).filter_by(user_ID = current_user.id).all()
 		# .add_columns(Points.earned_points, Posts.post_title, Posts.id, Posts.post_link, Posts.post_image, Posts.post_code, Posts.post_description).filter_by(user_ID = current_user.id).order_by(Points.earned_points.desc()).all()
+
 		# pointsofpast = Tracking.query.filter_by(user_ID = current_user.id).filter_by(Tracking.created_on >= (datetime.utcnow() - timedelta(3600 * 24 * 15)).sum()
 		pointsofpast = Tracking.query.filter(Tracking.user_ID == current_user.id).filter(Tracking.created_on >= (datetime.now() - timedelta(15))).count()
 		pointsofyesterday = Tracking.query.filter(Tracking.user_ID == current_user.id).filter(Tracking.created_on >= (datetime.now() - timedelta(1))).count()
