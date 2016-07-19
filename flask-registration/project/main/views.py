@@ -302,6 +302,8 @@ def payment():
 	form = paymentvalidator()
 	unpaidpoints = 0
 	totalamount = 0
+	userid = 0
+	payfor = 0
 	listofpayments = Transaction.query.filter(Transaction.user_ID == current_user.id).order_by(Transaction.created_on.desc())
 	userid = request.args.get('userid')
 	payfor = request.args.get('payfor')
