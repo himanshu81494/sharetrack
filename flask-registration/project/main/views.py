@@ -286,8 +286,19 @@ def userdetails():
 		db.session.commit()
 		return redirect('/')
 	
-	
-	return render_template('main/userdetails.html', form=form, user = user)
+	if userid:
+		user = User.query.filter(User.id == userid).first_or_404()
+		
+		# unpaid = User.query.outerjoin(Tracking, User.id == Tracking.user_ID).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, User.lastpaidon,User.email, User.name, func.count(Tracking.id).label('trackingcount')).group_by(User.id).filter(User.id == userid)
+		unpaid = Tracking.query.filter(Tracking.created_on > user.lastpaidon).filter(Tracking.user_ID == userid).count()
+
+		paidtothisuser = Transaction.query.filter(Transaction.user_ID == int(userid)).all()
+		if paidtothisuser:
+			paid = sum([item.amount for item in paidtothisuser])
+
+	rate = User.query.filter(User.id == 1).first()
+
+	return render_template('main/userdetails.html', form=form, user = user, rate, paidtilldate=paid, unpaidtilldate = unpaid)
 
 
 class paymentvalidator(Form):
