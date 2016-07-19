@@ -125,7 +125,7 @@ def showposts():
 	posts = Posts.query.order_by(Posts.id.desc()).all()
 	for item in posts:
 		query = Points.query.filter(Points.user_ID == current_user.id)
-		if query:
+		if query and query.earned_points:
 			earned_points = query.earned_points
 		else:
 			earned_points = 0
