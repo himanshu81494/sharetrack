@@ -134,11 +134,11 @@ def showposts():
 		# flash(datetime.now(), "warning")
 		# flash(datetime.now()-timedelta(15), "warning")
 
-		return render_template("main/Posts.html", title="all posts", posts = posts, ref = hashids.encode(current_user.id), pointsofpast = pointsofpast, pointsofyesterday=pointsofyesterday, rate = rate)
+		return render_template("main/Posts.html", title="all posts", posts = posts, ref = hashids.encode(current_user.id), pointsofpast = pointsofpast, pointsofyesterday=pointsofyesterday, rate = rate.usertype)
 	if current_user.usertype < 1:
 		flash("Get affiliated to access earnings!", "warning")
 	posts = Posts.query.order_by(Posts.id.desc()).all()
-	return render_template("main/Posts.html", title="all posts", posts = posts, ref = hashids.encode(current_user.id), rate = rate)
+	return render_template("main/Posts.html", title="all posts", posts = posts, ref = hashids.encode(current_user.id), rate = rate.usertype)
 	# posts = Posts.query.join(Posts.id = Points.post_ID).order_by(desc(Points.earned_points)).all()
 	# posts = Posts.query.all()
 	# points = Points.query.all()
@@ -329,11 +329,16 @@ def payment():
 		rate = User.query.filter(User.id == 1).first()
 		totalamount = sum([item.amount for item in listofpayments])
 '''
+	if current_user.admin:
+		ID = 0
+		ID = request.args.get("user")
+	else:
+		ID = current_user.id
 	# paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id).filter(User.id == current_user.id)
-	unpaid = Tracking.query.filter(Tracking.user_ID == current_user.id).filter(Tracking.created_on > current_user.lastpaidon).count()
-	
-	total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id).filter(User.id == current_user.id)
-			
+	unpaid = Tracking.query.filter(Tracking.user_ID == ID).filter(Tracking.created_on > current_user.lastpaidon).count()
+	#total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id).filter(User.id == current_user.id)
+	paid = Transaction.query.filter(Transaction.user_ID == ID).add_columns(func.sum(Transaction.amount).label('totalpaid'))		
+
 
 	if payfor and int(payfor) > 0 and current_user.admin and int(userid) > 0:
 		if form.validate_on_submit():
