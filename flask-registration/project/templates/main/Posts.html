@@ -1,5 +1,6 @@
 {% extends "_base.html" %}
 {% block content %}
+<div><a href="/userdetails?userid={{ current_user.id }}"><button class="btn btn-primary">View/Edit your payment</button></a></div>
 
 {% if posts %}
 <table class="table">
