@@ -314,7 +314,7 @@ def payment():
 		flash("showing all payments", "warning")
 		# totalamount = sum([item.amount for item in listofpayments])
 	
-	if current_user.admin and int(userid) > 0:
+	if userid and current_user.admin and int(userid) > 0:
 		ID = int(userid)
 	else:
 		ID = current_user.id
