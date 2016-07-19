@@ -21,7 +21,7 @@
     <tr>
       <th>#</th>
       <th>registered_on</th>
-      <th>confirmed_on</th>
+      <th>lastpaidon</th>
       <th>email</th>
       <th>admin</th>
       <th>usertype</th>
@@ -34,7 +34,7 @@
 <td><a href="/userdetails?userid={{ obj.id }}" >{{ obj.id }}</a></td>
 
 <td>{{ obj.registered_on }}</td>
-<td>{{ obj.confirmed_on }}</td>
+<td>{{ obj.lastpaidon }}</td>
 <td>{{ obj.email }}</td>
 <td>{{ obj.admin }}</td>
 {% if obj.usertype == 0 %}
