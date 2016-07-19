@@ -2,11 +2,12 @@
 {% from 'main/common.html' import edit_field %}
 {% block content %}
 
-
+<b>
 <p>total amount: {{total}}</p>
 <p>total amount paid: {{paidtilldate}}</p>
+<p>total unpaid clicks: {{unpaidtilldate}}</p>
 <p>total amount unpaid: {{unpaidtilldate}} * {{rate}}cpm</p>
-
+</b>
 {% if current_user.admin %}
 <a href="/payment?userid={{ user.id }}&payfor={{ user.id }}"><button class="btn">pay this user</button></a>
 {% endif %}
