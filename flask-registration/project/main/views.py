@@ -294,7 +294,7 @@ class paymentvalidator(Form):
 	amount = TextField('amount',validators=[required()])
 	comment = TextField('comment',validators=[])
 
-
+#9534862741
 
 @main_blueprint.route('/payment', methods=(['GET', 'POST']))
 @login_required
@@ -302,27 +302,35 @@ def payment():
 	form = paymentvalidator()
 	unpaidpoints = 0
 	totalamount = 0
-	userid = 0
-	payfor = 0
 	listofpayments = Transaction.query.filter(Transaction.user_ID == current_user.id).order_by(Transaction.created_on.desc())
 	userid = request.args.get('userid')
 	payfor = request.args.get('payfor')
-	if current_user.admin:
+	
+	if current_user.admin and userid and int(userid) > 0:
+		if Transaction.query.filter(Transaction.user_ID == int(userid)).count() > 0:
+			listofpayments = Transaction.query.filter(Transaction.user_ID == int(userid)).order_by(Transaction.created_on.desc())
+			flash("last payment made on: {}".format(listofpayments[0].created_on), "warning")
+			# lastpaymentdate = lastpayment.created_on;
+			unpaidpoints = Tracking.query.filter(Tracking.user_ID == userid).filter(Tracking.created_on > listofpayments[0].created_on).count()
+			rate = User.query.filter(User.id == 1).first()
+			flash("unpaidpoints :%d, %d"%(unpaidpoints, rate.usertype*unpaidpoints), "warning")
+			totalamount = sum([item.amount for item in listofpayments])
+
+	elif current_user.admin:
 		if Transaction.query.order_by(Transaction.created_on.desc()).count() > 0:
 			listofpayments = Transaction.query.order_by(Transaction.created_on.desc()).all()
 			# listofpayments = Transaction.query.all()
-		flash("showing all payments", "warning")
-		# totalamount = sum([item.amount for item in listofpayments])
-	
-	if userid and current_user.admin and int(userid) > 0:
-		ID = int(userid)
+			flash("showing all payments", "warning")
+			totalamount = sum([item.amount for item in listofpayments])
 	else:
-		ID = current_user.id
-	# paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id).filter(User.id == current_user.id)
-	unpaid = Tracking.query.filter(Tracking.user_ID == ID).filter(Tracking.created_on > current_user.lastpaidon).count()
-	#total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id).filter(User.id == current_user.id)
-	paidtothisuser = Transaction.query.filter_by(Transaction.user_ID = ID).add_columns(func.sum(Transaction.amount).label('paidtothisuser')).group_by(Transaction.user_ID)		
-
+		flash("last payment made on: {}".format(listofpayments[0].created_on), "warning")
+		unpaidpoints = Tracking.query.filter(Tracking.user_ID == current_user.id).filter(Tracking.created_on > listofpayments[0].created_on).count()
+		rate = User.query.filter(User.id == 1).first()
+		flash("unpaidpoints :%d, %d"%(unpaidpoints, rate.usertype*unpaidpoints), "warning")
+		totalamount = sum([item.amount for item in listofpayments])
+	
+		
+			
 
 	if payfor and int(payfor) > 0 and current_user.admin and int(userid) > 0:
 		if form.validate_on_submit():
@@ -333,13 +341,8 @@ def payment():
 			)
 			db.session.add(new_payment)
 			db.session.commit()
-			thisuser = User.query.filter(User.id == userid).first()
-			thisuser.lastpaidon = datetime.now()
-			db.session.commit()
-
 			return redirect(url_for('main.payment'))
-	rate = User.query.filter(User.id == 1).first()
-	return render_template("main/payment.html", payments = listofpayments, payfor = payfor, form = form, unpaidpoints = unpaidpoints, totalamount = paidtothisuser.paidtothisuser, unpaid = unpaid, rate = rate.usertype)
+	return render_template("main/payment.html", payments = listofpayments, payfor = payfor, form = form, unpaidpoints = unpaidpoints, totalamount = totalamount)
 
 from sqlalchemy import func
 @main_blueprint.route('/payuser', methods=(['GET']))
