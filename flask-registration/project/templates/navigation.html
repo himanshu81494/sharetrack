@@ -33,9 +33,6 @@
           <li><a href="{{ url_for('main.payment') }}">payment history</a></li>
           
         {% endif %}
-        {% if not current_user.admin and current_user.confirmed %}
-        <li><a href="{{ url_for('main.showposts') }}?showpoints=67">earnings</a></li>
-        {% endif %}
 
       </ul>
       <ul class="nav navbar-nav navbar-right">
