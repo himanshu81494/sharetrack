@@ -2,10 +2,10 @@
 {% from 'main/common.html' import edit_field %}
 {% block content %}
 
-<b>{{rate}}</b>
+<p>rate: <b>{{rate}}</b></p>
 
 <p>paid: {{paidtilldate}}</p>
-<p>unpaid: {{unpaidtilldate}}</p>
+<p>unpaid: {{unpaidtilldate}}*{{rate}}</p>
 
 {% if current_user.admin %}
 <a href="/payment?userid={{ user.id }}&payfor={{ user.id }}"><button class="btn">pay this user</button></a>
