@@ -1,6 +1,5 @@
 {% extends "_base.html" %}
 {% block content %}
-<div><a href="/userdetails?userid={{ current_user.id }}"><button class="btn btn-primary">View/Edit your payment</button></a></div>
 
 {% if posts %}
 <table class="table">
@@ -53,8 +52,5 @@
 <div class="alert alert-success" role="alert"><b>your points of last 24hrs: {{ pointsofyesterday }}</b></div>
 {% endif %}
 
-{% if current_user.confirmed%}
-        <p><a href="/showposts?showpoints=89">Earnings</a>
-        {% endif %}
 
 {% endblock %}
