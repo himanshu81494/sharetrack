@@ -67,7 +67,7 @@ def points():
 
 
 class changeratevalidator(Form):
-	rate = TextField('rate',validators=[required()])
+	rate = TextField('cpm',validators=[required()])
 
 @main_blueprint.route('/showusers', methods=['GET', 'POST'])
 @login_required
