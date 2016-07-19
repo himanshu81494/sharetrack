@@ -356,8 +356,8 @@ def payment():
 			)
 			db.session.add(new_payment)
 			db.session.commit()
-			
-			use = User.query.filter_by(User.id == payfor).first()
+
+			use = User.query.filter(User.id == payfor).first()
 			use.lastpaidon = datetime.now()
 			db.session.commit()
 			return redirect(url_for('main.payment'))
