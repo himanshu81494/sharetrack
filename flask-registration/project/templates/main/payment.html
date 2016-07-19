@@ -80,10 +80,5 @@ total amount earned
 <div class="alert alert-success" role="alert"><b>your points of last 24hrs: {{ pointsofyesterday }}</b></div>
 {% endif %}
 
-{% if current_user.confirmed%}
-        <p><a href="/showposts?showpoints=89">Earnings</a>
-        {% endif %}
-<br>
-<a href="/payuser"><button class="btn btn-primary">View with unpaid clicks</button></a>
 
 {% endblock %}
