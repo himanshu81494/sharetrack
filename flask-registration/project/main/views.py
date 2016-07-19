@@ -355,6 +355,8 @@ def payment():
 			form.comment.data,
 			)
 			db.session.add(new_payment)
+			user = User.query.filter_by(User.id = userid).first()
+			user.lastpaidon = datetime.now()
 			db.session.commit()
 			return redirect(url_for('main.payment'))
 	return render_template("main/payment.html", payments = listofpayments, payfor = payfor, form = form, unpaidpoints = unpaidpoints, totalamount = totalamount)
