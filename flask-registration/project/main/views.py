@@ -300,7 +300,7 @@ def userdetails():
 			paid = sum([item.amount for item in paidtothisuser])
 
 	rate = User.query.filter(User.id == 1).first()
-	total = (rate/1000)*paid
+	total = (int(rate.usertype)/1000)*int(paid)
 	return render_template('main/userdetails.html', form=form, user = user, rate=rate.usertype, paidtilldate=paid, unpaidtilldate = unpaid, total = total)
 
 
