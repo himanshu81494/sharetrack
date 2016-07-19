@@ -337,7 +337,7 @@ def payment():
 	# paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id).filter(User.id == current_user.id)
 	unpaid = Tracking.query.filter(Tracking.user_ID == ID).filter(Tracking.created_on > current_user.lastpaidon).count()
 	#total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id).filter(User.id == current_user.id)
-	paid = Transaction.query.filter(Transaction.user_ID == ID).add_columns(func.sum(Transaction.amount).label('totalpaid'))		
+	paidtothisuser = Transaction.query.filter(Transaction.user_ID == ID).add_columns(func.sum(Transaction.amount).label('totalpaid'))		
 
 
 	if payfor and int(payfor) > 0 and current_user.admin and int(userid) > 0:
@@ -355,7 +355,7 @@ def payment():
 
 			return redirect(url_for('main.payment'))
 	rate = User.query.filter(User.id == 1).first()
-	return render_template("main/payment.html", payments = listofpayments, payfor = payfor, form = form, unpaidpoints = unpaidpoints, totalamount = total, unpaid = unpaid, rate = rate.usertype)
+	return render_template("main/payment.html", payments = listofpayments, payfor = payfor, form = form, unpaidpoints = unpaidpoints, totalamount = paidtothisuser, unpaid = unpaid, rate = rate.usertype)
 
 from sqlalchemy import func
 @main_blueprint.route('/payuser', methods=(['GET']))
