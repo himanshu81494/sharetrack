@@ -258,6 +258,7 @@ class detailsvalidator(Form):
 @main_blueprint.route('/userdetails/',methods=['GET','POST'])
 @login_required
 def userdetails():
+	paid = 0
 	userid = request.args.get('userid')
 	if current_user.admin and userid and int(userid) > 0:
 		ID = int(userid)
