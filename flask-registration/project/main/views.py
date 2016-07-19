@@ -259,6 +259,8 @@ class detailsvalidator(Form):
 @login_required
 def userdetails():
 	paid = 0
+	unpaid = 0
+	ID = 0
 	userid = request.args.get('userid')
 	if current_user.admin and userid and int(userid) > 0:
 		ID = int(userid)
@@ -287,13 +289,13 @@ def userdetails():
 		db.session.commit()
 		return redirect('/')
 	
-	if userid:
-		user = User.query.filter(User.id == userid).first_or_404()
+	if ID:
+		user = User.query.filter(User.id == ID).first_or_404()
 		
 		# unpaid = User.query.outerjoin(Tracking, User.id == Tracking.user_ID).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, User.lastpaidon,User.email, User.name, func.count(Tracking.id).label('trackingcount')).group_by(User.id).filter(User.id == userid)
-		unpaid = Tracking.query.filter(Tracking.created_on > user.lastpaidon).filter(Tracking.user_ID == userid).count()
+		unpaid = Tracking.query.filter(Tracking.created_on > user.lastpaidon).filter(Tracking.user_ID == ID).count()
 
-		paidtothisuser = Transaction.query.filter(Transaction.user_ID == int(userid)).all()
+		paidtothisuser = Transaction.query.filter(Transaction.user_ID == ID).all()
 		if paidtothisuser:
 			paid = sum([item.amount for item in paidtothisuser])
 

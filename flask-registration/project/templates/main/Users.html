@@ -31,8 +31,7 @@
   <tbody>
 {% for obj in users %}
 <tr>
-
-<td><a href="/payuser?userid={{ obj.id }}" >{{ obj.id }}</a></td>
+<td><a href="/userdetails?userid={{ obj.id }}" >{{ obj.id }}</a></td>
 
 <td>{{ obj.registered_on }}</td>
 <td>{{ obj.confirmed_on }}</td>
