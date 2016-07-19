@@ -285,11 +285,9 @@ def userdetails():
 		
 		db.session.commit()
 		return redirect('/')
-	paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id).filter(User.id == ID)
-	total = User.query.outerjoin(Points, Points.user_ID == User.id).add_columns(User.id, func.sum(Points.earned_points).label('sumpoints')).group_by(User.id).filter(User.id == ID)
 	
 	
-	return render_template('main/userdetails.html', form=form, user = user, combined = zip(paid, total))
+	return render_template('main/userdetails.html', form=form, user = user)
 
 
 class paymentvalidator(Form):
@@ -352,7 +350,7 @@ def payment():
 
 			return redirect(url_for('main.payment'))
 	rate = User.query.filter(User.id == 1).first()
-	return render_template("main/payment.html", payments = listofpayments, payfor = payfor, form = form, unpaidpoints = unpaidpoints, totalamount = totalamount, unpaid = unpaid, rate = rate.usertype)
+	return render_template("main/payment.html", payments = listofpayments, payfor = payfor, form = form, unpaidpoints = unpaidpoints, totalamount = total, unpaid = unpaid, rate = rate.usertype)
 
 from sqlalchemy import func
 @main_blueprint.route('/payuser', methods=(['GET']))
