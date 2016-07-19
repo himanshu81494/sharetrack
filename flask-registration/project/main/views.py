@@ -120,6 +120,7 @@ def showposts():
 		if deletepostbyid > 0:
 			Posts.query.filter(Posts.id == deletepostbyid).delete()
 			db.session.commit()
+	rate = User.query.filter(User.id == 1).first()
 	
 	showpoints = request.args.get('showpoints')
 	if showpoints > 0 and current_user.usertype > 0:
@@ -133,11 +134,11 @@ def showposts():
 		# flash(datetime.now(), "warning")
 		# flash(datetime.now()-timedelta(15), "warning")
 
-		return render_template("main/Posts.html", title="all posts", posts = posts, ref = hashids.encode(current_user.id), pointsofpast = pointsofpast, pointsofyesterday=pointsofyesterday)
+		return render_template("main/Posts.html", title="all posts", posts = posts, ref = hashids.encode(current_user.id), pointsofpast = pointsofpast, pointsofyesterday=pointsofyesterday, rate = rate)
 	if current_user.usertype < 1:
 		flash("Get affiliated to access earnings!", "warning")
 	posts = Posts.query.order_by(Posts.id.desc()).all()
-	return render_template("main/Posts.html", title="all posts", posts = posts, ref = hashids.encode(current_user.id))
+	return render_template("main/Posts.html", title="all posts", posts = posts, ref = hashids.encode(current_user.id), rate = rate)
 	# posts = Posts.query.join(Posts.id = Points.post_ID).order_by(desc(Points.earned_points)).all()
 	# posts = Posts.query.all()
 	# points = Points.query.all()
