@@ -1,37 +1,8 @@
 {% extends "_base.html" %}
 {% block content %}
-{{rate}}
-{% if combined %}
-<table class="table">
-  <thead>
-    <tr>
-    
-      <th>userid</th>
-      <th>lastpayment date</th>
-      <th>useremail</th>
-      <th>unpaid points</th>
-      <th>payment remaining</th>
-    </tr>
-  </thead>
-  <tbody>
-
-{% for item in combined  %}
-<tr>
-<th>{{ item.id }}</th>
-<th>{{ item.lastpaidon }}</th>
-<th>{{ item.email }}</th>
-<th>{{ item.trackingcount }}</th>
-
-{% if item.trackingcount %}
-<th>{{ item.trackingcount}} * {{rate}}</th>
-{% endif %}
-<th><a href="/payment?userid={{ item.id }}&payfor={{ item.id }}">pay</a></th>
-
-{% endfor %}
-</tr>
-</tbody>
-</table>
-{% endif %}
-{{ unpaid }}
-{{ paid }}
+rate: {{rate}}
+<br>
+paid: {{ unpaid }}
+<br>
+unpaid: {{ paid }}
 {% endblock %}
