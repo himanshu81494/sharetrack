@@ -358,7 +358,11 @@ def payuser():
 	userid = 0
 	userid =  request.args.get('userid')
 	if userid:
-		unpaid = User.query.outerjoin(Tracking, User.id == Tracking.user_ID).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, User.lastpaidon,User.email, User.name, func.count(Tracking.id).label('trackingcount')).group_by(User.id).filter(User.id == userid)
+		last = User.query.filter(User.id == userid).first_or_404()
+		
+		# unpaid = User.query.outerjoin(Tracking, User.id == Tracking.user_ID).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, User.lastpaidon,User.email, User.name, func.count(Tracking.id).label('trackingcount')).group_by(User.id).filter(User.id == userid)
+		unpaid = Tracking.query.filter(Tracking.created_on > last.lastpaidon).filter(Tracking.user_ID == userid).count()
+
 		paidtothisuser = Transaction.query.filter(Transaction.user_ID == int(userid)).all()
 		if paidtothisuser:
 			paid = sum([item.amount for item in paidtothisuser])
