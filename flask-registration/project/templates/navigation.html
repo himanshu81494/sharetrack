@@ -36,8 +36,8 @@
         {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
-      <a href="https://docs.google.com/a/zapplon.com/document/d/1jv_aV3nIvmtjnBz_SVLO87hr94uVjwuHVg5FkXMYwTs/edit?usp=sharing">Privacy Policy</a>
-      <a href="https://docs.google.com/a/zapplon.com/document/d/11rKHo1yHIzQ9NTvEluz6QjsrVd1H1mez8NqKOAiZ89E/edit?usp=sharing">Terms and Conditions</a>
+      <li><a href="https://docs.google.com/a/zapplon.com/document/d/1jv_aV3nIvmtjnBz_SVLO87hr94uVjwuHVg5FkXMYwTs/edit?usp=sharing">Privacy Policy</a></li>
+      <li><a href="https://docs.google.com/a/zapplon.com/document/d/11rKHo1yHIzQ9NTvEluz6QjsrVd1H1mez8NqKOAiZ89E/edit?usp=sharing">Terms and Conditions</a></li>
         {% if current_user.is_authenticated() %}
           <li><a href="{{ url_for('user.logout') }}">Logout</a></li>
         {% else %}
