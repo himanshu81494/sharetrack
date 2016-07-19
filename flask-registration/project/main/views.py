@@ -125,7 +125,7 @@ def showposts():
 	posts = Posts.query.order_by(Posts.id.desc()).all()
 	showpoints = request.args.get('showpoints')
 	if showpoints > 0 and current_user.usertype > 0:
-		
+
 		posts = Posts.query.join(Points, Posts.id == Points.post_ID) \
 		.add_columns(Points.earned_points, Posts.post_title, Posts.id, Posts.post_link, Posts.post_image, Posts.post_code, Posts.post_description).filter_by(user_ID = current_user.id).order_by(Points.earned_points.desc()).all()
 		# pointsofpast = Tracking.query.filter_by(user_ID = current_user.id).filter_by(Tracking.created_on >= (datetime.utcnow() - timedelta(3600 * 24 * 15)).sum()
@@ -136,7 +136,7 @@ def showposts():
 		flash(datetime.now(), "warning")
 		# flash(datetime.now()-timedelta(15), "warning")
 
-		return render_template("main/Posts.html", title="all posts", posts = posts, ref = hashids.encode(current_user.id), pointsofpast = pointsofpast, pointsofyesterday=pointsofyesterday, rate = rate.usertype)
+		return render_template("main/Posts.html", title="all posts", posts = posts, ref = hashids.encode(current_user.id), pointsofpast = pointsofpast, pointsofyesterday=pointsofyesterday, rate = rate.usertype, showpoints = 10)
 	if current_user.usertype < 1:
 		flash("Get affiliated to access earnings!", "warning")
 	return render_template("main/Posts.html", title="all posts", posts = posts, ref = hashids.encode(current_user.id), rate = rate.usertype)
