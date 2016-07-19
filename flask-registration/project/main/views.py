@@ -371,5 +371,5 @@ def payuser():
 	
 	
 		
-	return render_template("main/payuser.html", combined = unpaid, rate = rate.usertype, paid = paid)
+	return render_template("main/payuser.html", unpaid = unpaid, rate = rate.usertype, paid = paid)
 
