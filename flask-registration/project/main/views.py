@@ -350,7 +350,7 @@ from sqlalchemy import func
 def payuser():
 	if not current_user.admin:
 		redirect('/')
-
+	paid = 0
 	# elements = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, func.sum(Transaction.amount)).group_by(User.id)
 	# paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.lastpaidon, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id)
 	# unpaid = User.query.outerjoin(Tracking, User.id == Tracking.user_ID).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, func.count(Tracking.id).label('trackingcount')).group_by(User.id).filter(User.id == current_user.id)
@@ -358,10 +358,10 @@ def payuser():
 	userid = 0
 	userid =  request.args.get('userid')
 	if userid:
-		last = User.query.filter(User.id == userid).first_or_404()
+		user = User.query.filter(User.id == userid).first_or_404()
 		
 		# unpaid = User.query.outerjoin(Tracking, User.id == Tracking.user_ID).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, User.lastpaidon,User.email, User.name, func.count(Tracking.id).label('trackingcount')).group_by(User.id).filter(User.id == userid)
-		unpaid = Tracking.query.filter(Tracking.created_on > last.lastpaidon).filter(Tracking.user_ID == userid).count()
+		unpaid = Tracking.query.filter(Tracking.created_on > user.lastpaidon).filter(Tracking.user_ID == userid).count()
 
 		paidtothisuser = Transaction.query.filter(Transaction.user_ID == int(userid)).all()
 		if paidtothisuser:
