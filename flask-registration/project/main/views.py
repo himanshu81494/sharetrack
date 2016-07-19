@@ -350,8 +350,7 @@ from sqlalchemy import func
 def payuser():
 	if not current_user.admin:
 		redirect('/')
-	unpaid = 0
-	paid = 0
+	
 	# elements = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.name, func.sum(Transaction.amount)).group_by(User.id)
 	# paid = User.query.outerjoin(Transaction, User.id == Transaction.user_ID).add_columns(User.id,User.lastpaidon, User.email, func.sum(Transaction.amount).label('summ')).group_by(User.id)
 	# unpaid = User.query.outerjoin(Tracking, User.id == Tracking.user_ID).filter(Tracking.created_on > User.lastpaidon).add_columns(User.id, func.count(Tracking.id).label('trackingcount')).group_by(User.id).filter(User.id == current_user.id)
